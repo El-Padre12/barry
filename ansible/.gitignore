@@ -1,0 +1,25 @@
+# Ansible Vault Password File
+.vault_pass.txt
+*.vault_pass
+
+# SSH Private Keys
+id_*
+*.key
+~/.ssh/* 
+
+# Temporary files created by Ansible
+*.retry
+.ansible/
+
+# Optional: Logs generated during playbook runs
+#ansible.log
+
+# Project-specific secrets file if you didn't put it in group_vars/all/
+# (If you followed the instructions exactly, group_vars/all/secrets.yaml is encrypted and safe to commit)
+secrets.yaml 
+
+# IDE/Editor specific files (common additions)
+.idea/
+.vscode/
+*.swp
+*~
