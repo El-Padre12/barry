@@ -1,6 +1,6 @@
 ---
 - name: Test Proxmox connectivity
-  hosts: proxmox_hosts
+  hosts: pve_1
   tasks:
     - name: Ping the Proxmox host
-      ansible.builtin.ping
+      ansible.builtin.ping:
