@@ -4,7 +4,7 @@ all:
     pve_1:
       ansible_host: 192.168.1.90
       ansible_user: root
-      ansible_ssh_private_key_file: ~/.ssh/id_ed25519_proxmox
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
 
   vars:
     proxmox_api_host: 192.168.1.90

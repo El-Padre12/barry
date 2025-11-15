@@ -35,3 +35,35 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Environment and secrets
+.env
+*.secret
+*.key
+*.pem
+
+# Ansible - Production inventories (uncomment if needed)
+# ansible/inventories/production/
+*vault_pass*
+
+# Docker volumes and state
+ansible-data/
+
+# Ansible runtime
+*.retry
+.ansible/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db

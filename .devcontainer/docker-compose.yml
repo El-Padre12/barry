@@ -1,0 +1,27 @@
+services:
+  home-ops:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+
+    container_name: home-opsbox
+    hostname: opsbox
+
+    command: sleep infinity
+
+    user: "1000:1000"
+
+    volumes:
+      - ..:/workspace
+      - ~/.ssh:/home/sre/.ssh:ro
+      - ~/.gitconfig:/home/sre/.gitconfig:ro
+      - ansible-data:/home/sre/.ansible
+
+      # Store ansible temp/cache data in a *subdirectory* so ownership is preserved
+      - ansible-data:/home/sre/.ansible/tmp
+
+    network_mode: host
+
+volumes:
+  ansible-data:
+    driver: local
