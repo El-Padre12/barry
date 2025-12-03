@@ -14,7 +14,7 @@ crash.*.log
 # control as they are data points which are potentially sensitive and subject 
 # to change depending on the environment.
 *.tfvars
-/terraform/*.tfvars
+/terraform/terraform.tfvars
 *.tfvars.json
 /terraform/variables.tf
 /variables.tf
