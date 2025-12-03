@@ -12,6 +12,16 @@ RUN apt-get update && apt-get install -y \
     nano \
     curl \
     sudo \
+    wget \
+    unzip \
+    gpg \
+    lsb-release \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list \
+    && apt-get update \
+    && apt-get install -y terraform \
     && rm -rf /var/lib/apt/lists/*
 
 ARG USERNAME=sre
@@ -30,7 +40,12 @@ RUN mkdir -p /home/$USERNAME/.ansible \
 
 RUN pip install --no-cache-dir --break-system-packages ansible
 
+# Switch to sre user to install Ansible collections
 USER $USERNAME
-WORKDIR /workspace
 
+# Install required Ansible collections
+RUN ansible-galaxy collection install community.general \
+    && ansible-galaxy collection install ansible.posix
+
+WORKDIR /workspace
 CMD ["/bin/bash"]
