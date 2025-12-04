@@ -2,16 +2,16 @@ terraform {
   required_providers {
     proxmox = {
       source  = "telmate/proxmox"
-      version = "~> 2.9"
+      version = "3.0.2-rc04"
     }
   }
 }
 
 provider "proxmox" {
-  pm_api_url      = var.proxmox_api_url
-  pm_user         = var.proxmox_user
-  pm_password     = var.proxmox_password
-  pm_tls_insecure = true
+  pm_api_url          = var.proxmox_api_url
+  pm_api_token_id     = var.proxmox_api_token_id
+  pm_api_token_secret = var.proxmox_api_token_secret
+  pm_tls_insecure     = true
 }
 
 # K3s Control Plane Node
@@ -25,20 +25,28 @@ resource "proxmox_vm_qemu" "k3s_control" {
   sockets = 1
   memory  = 8192  # 8GB
   
+  # Network configuration
   network {
+    id     = 0
     model  = "virtio"
     bridge = "vmbr0"  # Physical bridge - VMs on same network as router
   }
   
-  disk {
-    type    = "scsi"
-    storage = "local-lvm"
-    size    = "40G"
+  # Disk configuration
+  disks {
+    scsi {
+      scsi0 {
+        disk {
+          storage = "local-lvm"
+          size    = 40
+        }
+      }
+    }
   }
   
-  os_type   = "cloud-init"
-  ipconfig0 = "ip=${var.control_node_ip}/24,gw=${var.gateway}"
-  
+  # Cloud-init configuration
+  os_type    = "cloud-init"
+  ipconfig0  = "ip=${var.control_node_ip}/24,gw=${var.gateway}"
   ciuser     = var.ssh_user
   sshkeys    = file(var.ssh_public_key_path)
   nameserver = var.nameserver
@@ -64,20 +72,28 @@ resource "proxmox_vm_qemu" "k3s_workers" {
   sockets = 1
   memory  = 12288  # 12GB per worker
   
+  # Network configuration
   network {
+    id     = 0
     model  = "virtio"
     bridge = "vmbr0"
   }
   
-  disk {
-    type    = "scsi"
-    storage = "local-lvm"
-    size    = "60G"
+  # Disk configuration
+  disks {
+    scsi {
+      scsi0 {
+        disk {
+          storage = "local-lvm"
+          size    = 60
+        }
+      }
+    }
   }
   
-  os_type   = "cloud-init"
-  ipconfig0 = "ip=${var.worker_node_ips[count.index]}/24,gw=${var.gateway}"
-  
+  # Cloud-init configuration
+  os_type    = "cloud-init"
+  ipconfig0  = "ip=${var.worker_node_ips[count.index]}/24,gw=${var.gateway}"
   ciuser     = var.ssh_user
   sshkeys    = file(var.ssh_public_key_path)
   nameserver = var.nameserver
