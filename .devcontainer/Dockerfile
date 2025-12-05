@@ -1,8 +1,15 @@
 FROM debian:12-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 
 RUN apt-get update && apt-get install -y \
+    locales \
+    iputils-ping \
     python3 \
     python3-pip \
     openssh-client \
@@ -16,6 +23,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     gpg \
     lsb-release \
+    && /usr/sbin/locale-gen --quiet \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg \
