@@ -35,23 +35,29 @@ resource "proxmox_vm_qemu" "k3s_control" {
   }
   
   # Disk configuration
-  disks {
+disks {
     scsi {
       scsi0 {
         disk {
           storage = "local-lvm"
-          size    = 40
+          size    = 60
         }
       }
     }
-  }
-  
+    ide {
+      ide2 {
+        cloudinit {
+          storage = "local-lvm"
+        }
+      }
+    }
+  }  
   # Cloud-init configuration
-  os_type    = "cloud-init"
-  ipconfig0  = "ip=${var.control_node_ip}/24,gw=${var.gateway}"
-  ciuser     = var.ssh_user
-  sshkeys    = file(var.ssh_public_key_path)
-  nameserver = var.nameserver
+  os_type                 = "cloud-init"
+  ipconfig0               = "ip=${var.control_node_ip}/24,gw=${var.gateway}"
+  ciuser                  = var.ssh_user
+  sshkeys                 = var.ssh_public_key
+  nameserver              = var.nameserver
   
   tags = "k3s,control-plane"
   
@@ -93,14 +99,20 @@ resource "proxmox_vm_qemu" "k3s_workers" {
         }
       }
     }
-  }
-  
+    ide {
+      ide2 {
+        cloudinit {
+          storage = "local-lvm"
+        }
+      }
+    }
+  }  
   # Cloud-init configuration
-  os_type    = "cloud-init"
-  ipconfig0  = "ip=${var.worker_node_ips[count.index]}/24,gw=${var.gateway}"
-  ciuser     = var.ssh_user
-  sshkeys    = file(var.ssh_public_key_path)
-  nameserver = var.nameserver
+  os_type                 = "cloud-init"
+  ipconfig0               = "ip=${var.worker_node_ips[count.index]}/24,gw=${var.gateway}"
+  ciuser                  = var.ssh_user
+  sshkeys                 = var.ssh_public_key
+  nameserver              = var.nameserver
   
   tags = "k3s,worker"
   
