@@ -21,8 +21,10 @@ resource "proxmox_vm_qemu" "k3s_control" {
   clone       = var.template_name
   full_clone  = true
   
-  cores   = 4
-  sockets = 1
+  cpu {
+    cores   = 4
+    sockets = 1
+  }
   memory  = 8192  # 8GB
   
   # Network configuration
@@ -68,8 +70,10 @@ resource "proxmox_vm_qemu" "k3s_workers" {
   clone       = var.template_name
   full_clone  = true
   
-  cores   = 4
-  sockets = 1
+  cpu {
+    cores   = 4
+    sockets = 1
+  }
   memory  = 12288  # 12GB per worker
   
   # Network configuration
