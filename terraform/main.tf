@@ -20,6 +20,19 @@ resource "proxmox_vm_qemu" "k3s_control" {
   target_node = var.proxmox_node
   clone       = var.template_name
   full_clone  = true
+
+# Enable QEMU guest agent - CRITICAL for proper VM readiness detection
+  agent                   = 1
+  
+  # Boot configuration
+  boot                    = "order=scsi0"
+  
+  # Don't start automatically on PVE boot (optional, but good for control)
+  onboot                  = false
+  
+  # VM will be considered ready when guest agent is running
+  # This ensures cloud-init has time to complete
+  define_connection_info  = true
   
   cpu {
     cores   = 4
@@ -56,11 +69,18 @@ disks {
   os_type                 = "cloud-init"
   ipconfig0               = "ip=${var.control_node_ip}/24,gw=${var.gateway}"
   ciuser                  = var.ssh_user
-  sshkeys                 = var.ssh_public_key
+  sshkeys                 = <<-EOT
+  ${trimspace(var.ssh_public_key)}
+  EOT
   nameserver              = var.nameserver
   
   tags = "k3s,control-plane"
-  
+
+# Add a short delay to ensure cloud-init completes
+  provisioner "local-exec" {
+    command = "sleep 45"
+  }  
+
   lifecycle {
     ignore_changes = [
       network,
@@ -75,6 +95,12 @@ resource "proxmox_vm_qemu" "k3s_workers" {
   target_node = var.proxmox_node
   clone       = var.template_name
   full_clone  = true
+
+# Enable QEMU guest agent
+  agent                   = 1
+  boot                    = "order=scsi0"
+  onboot                  = false
+  define_connection_info  = true
   
   cpu {
     cores   = 4
@@ -111,10 +137,16 @@ resource "proxmox_vm_qemu" "k3s_workers" {
   os_type                 = "cloud-init"
   ipconfig0               = "ip=${var.worker_node_ips[count.index]}/24,gw=${var.gateway}"
   ciuser                  = var.ssh_user
-  sshkeys                 = var.ssh_public_key
+  sshkeys                 = <<-EOT
+  ${trimspace(var.ssh_public_key)}
+  EOT
   nameserver              = var.nameserver
   
   tags = "k3s,worker"
+
+  provisioner "local-exec" {
+    command = "sleep 45"
+  }
   
   lifecycle {
     ignore_changes = [
