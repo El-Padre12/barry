@@ -12,6 +12,7 @@
 **/terraform.tfvars
 !**/*.tfvars.example
 **/*.tfvars.json
+**/variables.tf
 **/override.tf
 **/override.tf.json
 **/*_override.tf
