@@ -21,5 +21,51 @@ Followed by deploying my applications one at a time, using docker-compose and ge
      as we will need this but we will not need a GUI.
    - Install GRUB boot loader to your primary drive by selecting the device '/dev/sda'
    - reboot
+### Install Qemu Guest Agent
+   ```
+   apt update && apt upgrade -y 
+   ```
+   ```
+   apt install qemu-guest-agent
+   ``` 
 ### Install Docker & Docker Compose on debian
-   - ...
+
+When debian 12 is initially installed tools like 'sudo' and 'curl' won't be installed. So you must install 'sudo' as root and ensure your user has 'sudo privileges'
+   - uninstall old versions
+   ```
+   sudo apt remove $(dpkg --get-selections docker.io docker-compose docker-doc podman-docker containerd runc | cut -f1)
+   ```
+   - set up dockers apt repository
+   ```
+   # Add Docker's official GPG key:
+   sudo apt update
+   sudo apt install ca-certificates curl
+   sudo install -m 0755 -d /etc/apt/keyrings
+   sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+   sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+   # Add the repository to Apt sources:
+   sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+   Types: deb
+   URIs: https://download.docker.com/linux/debian
+   Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+   Components: stable
+   Signed-By: /etc/apt/keyrings/docker.asc
+   EOF
+
+   sudo apt update
+   ```
+   - install docker packages
+   ```
+   sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+   ```
+   - add your user to the 'docker' group so you don't need to preface docker commands with 'sudo' everytime
+   ```
+   sudo usermod -aG docker $USER
+   ```
+   - verify install/user added to docker-group by running the hello-world image
+   ```
+   docker run hello-world
+   ``` 
+
+   
