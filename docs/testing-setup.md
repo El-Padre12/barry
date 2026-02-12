@@ -78,6 +78,10 @@ When debian 12 is initially installed tools like 'sudo' and 'curl' won't be inst
    docker run hello-world
    ``` 
 
-### Linkding Deplyment
+### Homepage Deployment
+
+   - following the documentation at the [Homepage-Website](https://gethomepage.dev/installation) was pretty straight forward.
+   - I dont feel the need to go step by step, but I wanted to say that when it comes to docker volumes I'm going to store them on a *dedicated seperate mount point*.
+     Seperating the Docker volumes from the OS, this will be good Backup&Recovery, Storage management, and performance.
 
 ## Phase Two: IaC   
