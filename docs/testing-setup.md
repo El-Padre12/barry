@@ -1,4 +1,14 @@
-# Phase One: Manual Setup
+# Barry's Testing Environment Setup-Guide
+
+This document details the steps i took to build my 'testing' environment for Barry my homelab-server.
+Phase one consists of the manual steps I took to build this.
+Phase two consists of the IaC I write to automate the deployment and configuration of the testing env.
+
+## Table of Contents
+
+1. [Phase One](#phase-one-manual-setup)
+
+## Phase One: Manual Setup
 
 Phase one consists of manually provisioning and configuring the testing environment on Barry. 
 Followed by deploying my applications one at a time, using docker-compose and getting comfortable with docker networking, volumes, and env vars.
@@ -22,21 +32,21 @@ Followed by deploying my applications one at a time, using docker-compose and ge
    - Install GRUB boot loader to your primary drive by selecting the device '/dev/sda'
    - reboot
 ### Install Qemu Guest Agent
-   ```
+   ```bash
    apt update && apt upgrade -y 
    ```
-   ```
+   ```bash
    apt install qemu-guest-agent
    ``` 
 ### Install Docker & Docker Compose on debian
 
 When debian 12 is initially installed tools like 'sudo' and 'curl' won't be installed. So you must install 'sudo' as root and ensure your user has 'sudo privileges'
    - uninstall old versions
-   ```
+   ```bash
    sudo apt remove $(dpkg --get-selections docker.io docker-compose docker-doc podman-docker containerd runc | cut -f1)
    ```
    - set up dockers apt repository
-   ```
+   ```bash
    # Add Docker's official GPG key:
    sudo apt update
    sudo apt install ca-certificates curl
@@ -56,16 +66,18 @@ When debian 12 is initially installed tools like 'sudo' and 'curl' won't be inst
    sudo apt update
    ```
    - install docker packages
-   ```
+   ```bash
    sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
    ```
    - add your user to the 'docker' group so you don't need to preface docker commands with 'sudo' everytime
-   ```
+   ```bash
    sudo usermod -aG docker $USER
    ```
    - verify install/user added to docker-group by running the hello-world image
-   ```
+   ```bash
    docker run hello-world
    ``` 
 
-   
+### Linkding Deplyment
+
+## Phase Two: IaC   
