@@ -89,5 +89,11 @@ When debian 12 is initially installed tools like 'sudo' and 'curl' won't be inst
    - following the documentation at the [Homepage-Website](https://gethomepage.dev/installation) was pretty straight forward.
    - I dont feel the need to go step by step, but I wanted to say that when it comes to docker volumes I'm going to store them on a *dedicated seperate mount point*.
      Seperating the Docker volumes from the OS, this will be good Backup&Recovery, Storage management, and performance.
+   - when I automate this ill just copy the config files
+
+### Linkding Deployment
+  
+   - Pretty straight forward like home page. all configs and data lives in a docker volume which can be backuped by seperating the docker volume from the OS in a mounted
+     disk.
 
 ## Phase Two: IaC   
