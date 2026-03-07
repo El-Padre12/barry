@@ -83,3 +83,25 @@
   docker logs linkding, etc
   ```
 - `Never Delete VM Without Detaching scsi1 First!!`
+
+### Step 8 - Make Mount Persistent (fstab)
+- get disk UUID:
+  ```bash
+    sudo blkid /dev/sda1
+  ```
+- edit fstab:
+  ```bash
+    sudo nano /etc/fstab
+  ```
+- add line (replace UUID):
+  ```
+    UUID=your-uuid-here /var/lib/docker-data ext4 defaults 0 2
+  ```
+- test:
+  ```bash
+    sudo umount /var/lib/docker-data
+    sudo mount -a
+    df -h | grep docker-data
+  ```
+
+
