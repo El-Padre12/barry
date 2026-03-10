@@ -10,6 +10,8 @@ RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 RUN apt-get update && apt-get install -y \
     locales \
     iputils-ping \
+    iproute2 \
+    tree \
     python3 \
     python3-pip \
     openssh-client \
