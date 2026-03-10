@@ -96,4 +96,11 @@ When debian 12 is initially installed tools like 'sudo' and 'curl' won't be inst
    - Pretty straight forward like home page. all configs and data lives in a docker volume which can be backuped by seperating the docker volume from the OS in a mounted
      disk.
 
-## Phase Two: IaC   
+## Phase Two: IaC
+
+Phase two consists of the steps I took to automate infrastructure provisioning/configuration, and 
+application deployment/configurtion. Somethings might be purposely ommited like the steps I took to make 
+the cloud-init template(`you will need to create your own`. As well as other things I didn't feel the
+need to document.
+
+### Terraform
