@@ -1,0 +1,13 @@
+# Proxmox API credentials
+proxmox_api_token_id     = "your-user@pve!your-token-name"
+proxmox_api_token_secret = "your-secret-here"
+
+# SSH public key (paste your actual public key here)
+ssh_public_key = "ssh-ed25519 AAAA... your-email@example.com"
+
+# Optional: Override defaults if needed
+# vm_ip        = "192.168.1.196"
+# vm_name      = "docker-testing"
+# vm_memory    = 12288
+# vm_cores     = 4
+# data_disk_size = 150
