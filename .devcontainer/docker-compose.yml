@@ -16,6 +16,7 @@ services:
       - ~/.ssh:/home/sre/.ssh:ro
       - ~/.gitconfig:/home/sre/.gitconfig:ro
       - ansible-data:/home/sre/.ansible
+      - /etc/localtime:/etc/localtime:ro
 
       # Store ansible temp/cache data in a *subdirectory* so ownership is preserved
       - ansible-data:/home/sre/.ansible/tmp
